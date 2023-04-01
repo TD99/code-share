@@ -1,0 +1,37 @@
+version: '3.9'
+name: codesharev1
+services:
+  nginx:
+    image: tdu135585/codeshare-nginx-default:latest
+    container_name: nginx_container
+    ports:
+      - 80:80
+    links:
+      - php
+    restart: always
+
+  php:
+    image: tdu135585/codeshare-php-default:latest
+    container_name: php_container
+    ports:
+      - 9000
+    environment:
+      - DB_HOST=mysql # DO NOT CHANGE!
+      - DB_USERNAME=dbuser
+      - DB_PASSWORD=W1EavJ6k6D
+      - DB_NAME=codeshare
+      - DB_PORT=3306
+      - DB_TABLE=snippets
+    restart: always
+
+  mysql:
+    image: mysql:8.0.32
+    container_name: mysql_container
+    ports:
+      - 3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=4F8VK4xB5YpX
+      - MYSQL_DATABASE=codeshare
+      - MYSQL_USER=dbuser
+      - MYSQL_PASSWORD=W1EavJ6k6D
+    restart: always

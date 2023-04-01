@@ -1,0 +1,236 @@
+#     ____          _      ____  _                    
+#    / ___|___   __| | ___/ ___|| |__   __ _ _ __ ___ 
+#   | |   / _ \ / _` |/ _ \___ \| '_ \ / _` | '__/ _ \
+#   | |__| (_) | (_| |  __/___) | | | | (_| | | |  __/
+#    \____\___/ \__,_|\___|____/|_| |_|\__,_|_|  \___|
+#   Version 1 (gibb) @ Kubernetes
+#   From 2023/04/01
+#   MIT License
+#   By Tim Dürr (t9craft)
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: codeshare
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: codesharev1-default
+  namespace: codeshare
+spec:
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              ch.t9craft.network/codesharev1-default: "true"
+  podSelector:
+    matchLabels:
+      ch.t9craft.network/codesharev1-default: "true"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    ch.t9craft.service: mysql
+  name: mysql
+  namespace: codeshare
+spec:
+  ports:
+    - name: "3306"
+      port: 3306
+      targetPort: 3306
+  selector:
+    ch.t9craft.service: mysql
+status:
+  loadBalancer: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    ch.t9craft.service: mysql
+  name: mysql
+  namespace: codeshare
+spec:
+  replicas: 1 # Number of MySQL replicas
+  selector:
+    matchLabels:
+      ch.t9craft.service: mysql
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        ch.t9craft.network/codesharev1-default: "true"
+        ch.t9craft.service: mysql
+    spec:
+      containers:
+        - env: # You may also change these values in the PHP configuration 
+            - name: MYSQL_DATABASE
+              value: codeshare
+            - name: MYSQL_PASSWORD
+              value: W1EavJ6k6D
+            - name: MYSQL_ROOT_PASSWORD
+              value: 4F8VK4xB5YpX
+            - name: MYSQL_USER
+              value: dbuser
+          image: mysql:8.0.32
+          name: mysql-container
+          ports:
+            - containerPort: 3306
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "0.5"
+            limits:
+              memory: "1Gi"
+              cpu: "1"
+      restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    ch.t9craft.service: nginx
+  name: nginx
+  namespace: codeshare
+spec:
+  ports:
+    - name: "80"
+      port: 80
+      targetPort: 80
+  selector:
+    ch.t9craft.service: nginx
+status:
+  loadBalancer: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    ch.t9craft.service: nginx
+  name: nginx
+  namespace: codeshare
+spec:
+  replicas: 1 # Number of Nginx replicas
+  selector:
+    matchLabels:
+      ch.t9craft.service: nginx
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        ch.t9craft.network/codesharev1-default: "true"
+        ch.t9craft.service: nginx
+    spec:
+      containers:
+        - image: tdu135585/codeshare-nginx-default:latest
+          name: nginx-container
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "0.5"
+            limits:
+              memory: "256Mi"
+              cpu: "1"
+      restartPolicy: Always
+status: {}
+---
+apiVersion: networking.k8s.io/v1 #NOT WORKING CORRECTLY
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  namespace: codeshare
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: codeshare.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx
+            port:
+              number: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    ch.t9craft.service: php
+  name: php
+  namespace: codeshare
+spec:
+  ports:
+    - name: "9000"
+      port: 9000
+      targetPort: 9000
+  selector:
+    ch.t9craft.service: php
+status:
+  loadBalancer: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    ch.t9craft.service: php
+  name: php
+  namespace: codeshare
+spec:
+  replicas: 1 # Number of PHP replicas
+  selector:
+    matchLabels:
+      ch.t9craft.service: php
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        ch.t9craft.network/codesharev1-default: "true"
+        ch.t9craft.service: php
+    spec:
+      containers:
+        - env: # You may also change these values in the MYSQL configuration
+            - name: DB_HOST
+              value: mysql
+            - name: DB_NAME
+              value: codeshare
+            - name: DB_PASSWORD
+              value: W1EavJ6k6D
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_TABLE
+              value: snippets
+            - name: DB_USERNAME
+              value: dbuser
+          image: tdu135585/codeshare-php-default:latest
+          name: php-container
+          ports:
+            - containerPort: 9000
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "0.5"
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+      restartPolicy: Always
+status: {}
