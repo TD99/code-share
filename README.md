@@ -47,7 +47,7 @@ First, clone the CodeShare repository from GitHub:
 ### Step 2: Navigate to the Repo-Directory (cd)
 
 ### Step 3: Start the Application
-To start the CodeShare application, run the following command in the root directory of the cloned repository:
+To start the CodeShare application, run the following command:
 ```docker-compose up -d```
 This will start the application in detached mode, which means it will continue to run in the background even after you close the terminal.
 
