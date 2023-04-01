@@ -52,7 +52,7 @@ To start the CodeShare application, run the following command:
 This will start the application in detached mode, which means it will continue to run in the background even after you close the terminal.
 
 ### Step 4: Access the Application
-Once the application is running, you can access it in your web browser at (http://localhost:80)[http://localhost:80].
+Once the application is running, you can access it in your web browser at [http://localhost:80](http://localhost:80).
 
 ### Step 5 (optional): Change the Config File
 For production, it's important to change the Usernames and Passwords for the DB. Change them in `docker-compose.yaml` (both MySQL and PHP environment).
@@ -87,7 +87,7 @@ Edit the "Hosts" file (on Linux: `/etc/hosts`) and add the following lines:
 127.0.0.1    codeshare.local
 ...
 ```
-The CodeShare-Website should now be reachable at (http://codeshare.local:80)[http://codeshare.local:80].
+The CodeShare-Website should now be reachable at [http://codeshare.local:80](http://codeshare.local:80).
 
 ### Step 5 (optional): Change the Config File
 For production, it's important to change the Usernames and Passwords for the DB. Change them in `kubernetes.yaml` (both MySQL and PHP environment). You can also change the number or replicas. The fields are marked with comments.
