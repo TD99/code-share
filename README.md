@@ -41,14 +41,14 @@ Before you start, you'll need to make sure you have the following installed:
 - Docker Compose
 
 ### Step 1: Clone the Repository
-First, clone the CodeShare repository from GitHub:
-```git clone https://github.com/TD99/code-share.git```
+First, clone the CodeShare repository from GitHub:  
+```git clone https://github.com/TD99/code-share.git```  
 
 ### Step 2: Navigate to the Repo-Directory (cd)
 
 ### Step 3: Start the Application
-To start the CodeShare application, run the following command:
-```docker-compose up -d```
+To start the CodeShare application, run the following command:  
+```docker-compose up -d```  
 This will start the application in detached mode, which means it will continue to run in the background even after you close the terminal.
 
 ### Step 4: Access the Application
@@ -63,19 +63,19 @@ For production, it's important to change the Usernames and Passwords for the DB.
 - Ingress
 
 ### Step 1: Clone the Repository
-First, clone the CodeShare repository from GitHub:
-```git clone https://github.com/TD99/code-share.git```
+First, clone the CodeShare repository from GitHub:  
+```git clone https://github.com/TD99/code-share.git```  
 
 ### Step 2: Navigate to the Repo-Directory (cd)
 
 ### Step 3: Deploy the Application
-To deploy the CodeShare application, run the following command:
-```sudo microk8s kubectl apply -f ./kubernetes.yaml```
+To deploy the CodeShare application, run the following command:  
+```sudo microk8s kubectl apply -f ./kubernetes.yaml```  
 
 ### Step 4: Access the Application
-Once the application is deployed, you can access it in your web browser by using the ClusterIP address of the Nginx service. To find the IP address, run the following command:
-```sudo microk8s kubectl get services -n codeshare```
-This will display the IP address (Column CLUSTERIP) of the Nginx service. You can then access the application in your web browser by using the IP address.
+Once the application is deployed, you can access it in your web browser by using the ClusterIP address of the Nginx service. To find the IP address, run the following command:  
+```sudo microk8s kubectl get services -n codeshare```  
+This will display the IP address (column: CLUSTERIP) of the Nginx service. You can then access the application in your web browser by using the IP address.
 
 #### Ingress
 Ingress is not working properly with Nginx at the moment. It is currently resulting HTTP 504 Errors. I will be working on this in the future.
@@ -93,5 +93,5 @@ The CodeShare-Website should now be reachable at [http://codeshare.local:80](htt
 For production, it's important to change the Usernames and Passwords for the DB. Change them in `kubernetes.yaml` (both MySQL and PHP environment). You can also change the number or replicas. The fields are marked with comments.
 
 ### Delete CodeShare
-The following command will delete the `codeshare` namespace and all the resources associated with it.
-```sudo microk8s kubectl delete namespace codeshare```
+The following command will delete the `codeshare` namespace and all the resources associated with it:  
+```sudo microk8s kubectl delete namespace codeshare```  
