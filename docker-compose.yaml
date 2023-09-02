@@ -3,8 +3,8 @@
 #   | |   / _ \ / _` |/ _ \___ \| '_ \ / _` | '__/ _ \
 #   | |__| (_) | (_| |  __/___) | | | | (_| | | |  __/
 #    \____\___/ \__,_|\___|____/|_| |_|\__,_|_|  \___|
-#   Version 1 (gibb) @ Docker-Compose
-#   From 2023/03/31
+#   Version 1.1 @ Docker-Compose
+#   2023/09/02
 #   MIT License
 #   By Tim Dürr (t9craft)
 
@@ -31,7 +31,7 @@ services:
       - DB_PASSWORD=W1EavJ6k6D
       - DB_NAME=codeshare
       - DB_PORT=3306
-      - DB_TABLE=snippets
+      - DB_TABLE=snippets # DO NOT CHANGE!
     restart: always
 
   mysql:
