@@ -3,8 +3,8 @@
 #   | |   / _ \ / _` |/ _ \___ \| '_ \ / _` | '__/ _ \
 #   | |__| (_) | (_| |  __/___) | | | | (_| | | |  __/
 #    \____\___/ \__,_|\___|____/|_| |_|\__,_|_|  \___|
-#   Version 1 (gibb) @ Kubernetes
-#   From 2023/04/01
+#   Version 1 @ Kubernetes
+#   2023/09/02
 #   MIT License
 #   By Tim Dürr (t9craft)
 
@@ -208,7 +208,7 @@ spec:
         ch.t9craft.service: php
     spec:
       containers:
-        - env: # You may also change these values in the MYSQL configuration
+        - env: # DO NOT CHANGE DB_HOST AND DB_TABLE; You may also change these values in the MYSQL configuration
             - name: DB_HOST
               value: mysql
             - name: DB_NAME
