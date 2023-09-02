@@ -80,7 +80,7 @@ This will display the IP address (column: CLUSTERIP) of the Nginx service. You c
 #### Ingress
 Ingress is not working properly with Nginx at the moment. It is currently resulting HTTP 504 Errors. I will be working on this in the future.
 
-**If you still want to use Ingress**
+**If you still want to use Ingress**  
 Edit the "Hosts" file (on Linux: `/etc/hosts`) and add the following lines:
 ```
 ...
