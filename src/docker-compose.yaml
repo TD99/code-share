@@ -1,0 +1,57 @@
+version: '3.9'
+name: codesharev1
+services:
+  nginx:
+    build: ./nginx
+    container_name: nginx_container
+    ports:
+      - 80:80
+    links:
+      - php
+    volumes_from:
+      - app-data
+    restart: unless-stopped
+
+  php:
+    build: ./php
+    image: php:fpm-alpine3.17
+    container_name: php_container
+    
+    volumes_from:
+      - app-data
+    environment:
+      - DB_HOST=mysql # DO NOT CHANGE!
+      - DB_USERNAME=dbuser
+      - DB_PASSWORD=W1EavJ6k6D
+      - DB_NAME=codeshare
+      - DB_PORT=3306
+      - DB_TABLE=snippets
+    restart: unless-stopped
+
+  app-data:
+    image: php:fpm-alpine3.17
+    container_name: app-data_container
+    volumes:
+      - ./www/html/:/var/www/html/
+    command: "true"
+
+  mysql:
+    image: mysql:8.0.32
+    container_name: mysql_container
+    ports:
+      - 3306
+    volumes_from:
+      - mysql-data
+    environment:
+      - MYSQL_ROOT_PASSWORD=4F8VK4xB5YpX
+      - MYSQL_DATABASE=codeshare
+      - MYSQL_USER=dbuser
+      - MYSQL_PASSWORD=W1EavJ6k6D
+    restart: unless-stopped
+
+  mysql-data:
+    image: mysql:8.0.32
+    container_name: mysql-data_container
+    volumes:
+      - /var/lib/mysql
+    command: "true"
