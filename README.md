@@ -33,6 +33,9 @@
   </tbody>
 </table>
 
+# Demo
+A demo can be found on [https://tcraft.link/codesh](https://tcraft.link/codesh).
+
 # Deployment
 ## Docker
 ### Prerequisites
